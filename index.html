@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskFlow UA | Вебзастосунок для організації щоденних завдань</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-theme="dark">
+    <div class="app-bg"></div>
+
+    <section id="authScreen" class="auth-screen">
+      <div class="auth-showcase">
+        <p class="eyebrow">Дипломний проєкт</p>
+        <h1>TaskFlow UA</h1>
+        <p class="lead">
+          Інтелектуальний вебзастосунок для планування дня, контролю виконання
+          завдань, підтримки звичок і персональної організації користувача.
+        </p>
+
+        <div class="showcase-pills">
+          <span>Авторизація</span>
+          <span>Світла і темна тема</span>
+          <span>Планер і аналітика</span>
+        </div>
+
+        <div class="showcase-grid">
+          <article>
+            <strong>Розумний дашборд</strong>
+            <p>Статистика продуктивності, дедлайни та фокус дня в одному місці.</p>
+          </article>
+          <article>
+            <strong>Особистий кабінет</strong>
+            <p>Кожен користувач має власні задачі, звички, нотатки та налаштування.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="auth-panel">
+        <div class="auth-tabs">
+          <button id="loginTab" class="auth-tab active" type="button">Вхід</button>
+          <button id="registerTab" class="auth-tab" type="button">Реєстрація</button>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+          <h2>Увійти до системи</h2>
+          <label>
+            Електронна пошта
+            <input id="loginEmail" type="email" placeholder="student@example.com" required />
+          </label>
+          <label>
+            Пароль
+            <input id="loginPassword" type="password" placeholder="Введіть пароль" required />
+          </label>
+          <button class="primary-button" type="submit">Увійти</button>
+        </form>
+
+        <form id="registerForm" class="auth-form auth-form-hidden">
+          <h2>Створити обліковий запис</h2>
+          <label>
+            Ім'я користувача
+            <input id="registerName" type="text" placeholder="Михайло" required />
+          </label>
+          <label>
+            Електронна пошта
+            <input id="registerEmail" type="email" placeholder="student@example.com" required />
+          </label>
+          <label>
+            Пароль
+            <input id="registerPassword" type="password" placeholder="Не менше 6 символів" required />
+          </label>
+          <button class="primary-button" type="submit">Зареєструватися</button>
+        </form>
+
+        <p id="authMessage" class="auth-message"></p>
+      </div>
+    </section>
+
+    <div id="appScreen" class="app-shell app-hidden">
+      <header class="topbar">
+        <div class="hero-card">
+          <p class="eyebrow">Дипломний проєкт</p>
+          <h1>TaskFlow UA</h1>
+          <p class="hero-copy">
+            Вебзастосунок для організації щоденних завдань користувача з
+            персональним кабінетом, керуванням активностями, аналітикою та
+            адаптивним інтерфейсом.
+          </p>
+        </div>
+
+        <div class="control-card">
+          <div class="top-actions">
+            <button id="themeToggle" class="ghost-button" type="button">Змінити тему</button>
+            <button id="logoutButton" class="ghost-button danger" type="button">Вийти</button>
+          </div>
+
+          <div class="profile-card">
+            <span>Користувач</span>
+            <strong id="profileName"></strong>
+            <p id="profileEmail"></p>
+          </div>
+
+          <div class="focus-card">
+            <span>Фокус дня</span>
+            <strong id="focusTask"></strong>
+            <p id="focusMeta"></p>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <aside class="sidebar">
+          <section class="panel profile-summary">
+            <p class="section-label">Навігація</p>
+            <div class="nav-list">
+              <button class="nav-button active" data-view-button="overview" type="button">Огляд</button>
+              <button class="nav-button" data-view-button="planner" type="button">Планер</button>
+              <button class="nav-button" data-view-button="habits" type="button">Звички і нотатки</button>
+            </div>
+          </section>
+
+          <section class="panel mini-stats">
+            <article>
+              <span>Сьогодні</span>
+              <strong id="todayLabel"></strong>
+            </article>
+            <article>
+              <span>Активні задачі</span>
+              <strong id="activeCount"></strong>
+            </article>
+            <article>
+              <span>Виконано сьогодні</span>
+              <strong id="doneTodayCount"></strong>
+            </article>
+            <article>
+              <span>Рівень фокусу</span>
+              <strong id="focusScore"></strong>
+            </article>
+          </section>
+        </aside>
+
+        <section class="content">
+          <section class="view view-active" data-view="overview">
+            <div class="overview-top">
+              <article class="panel statement-card">
+                <p class="section-label">Продуктивність</p>
+                <h2>Центр керування щоденною активністю</h2>
+                <p>
+                  TaskFlow UA поєднує керування задачами, таймлайн подій,
+                  статуси виконання, особисті звички та короткі нотатки в
+                  межах єдиного вебсередовища.
+                </p>
+                <div class="tag-row">
+                  <span>Авторизація</span>
+                  <span>Kanban</span>
+                  <span>Theme Switcher</span>
+                  <span>Local Storage</span>
+                </div>
+              </article>
+
+              <article class="panel progress-card">
+                <div class="section-head">
+                  <div>
+                    <p class="section-label">Загальний прогрес</p>
+                    <h2>Поточний стан дня</h2>
+                  </div>
+                  <strong id="completionRate"></strong>
+                </div>
+                <div class="progress-track">
+                  <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <p id="progressText" class="soft-text"></p>
+              </article>
+            </div>
+
+            <div class="stats-grid">
+              <article class="panel stat-box"><span>Усього задач</span><strong id="totalTasks"></strong></article>
+              <article class="panel stat-box"><span>На сьогодні</span><strong id="todayTasks"></strong></article>
+              <article class="panel stat-box"><span>У процесі</span><strong id="inProgressTasks"></strong></article>
+              <article class="panel stat-box"><span>Високий пріоритет</span><strong id="highPriorityTasks"></strong></article>
+            </div>
+
+            <div class="overview-grid">
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <p class="section-label">Таймлайн</p>
+                    <h2>Розклад на сьогодні</h2>
+                  </div>
+                </div>
+                <div id="timelineList" class="card-list"></div>
+              </section>
+
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <p class="section-label">Дедлайни</p>
+                    <h2>Найближчі завдання</h2>
+                  </div>
+                </div>
+                <div id="deadlineList" class="card-list"></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="view" data-view="planner">
+            <div class="planner-grid">
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <p class="section-label">Нове завдання</p>
+                    <h2>Планування робочого дня</h2>
+                  </div>
+                  <span class="status-chip neutral">Персональний простір</span>
+                </div>
+
+                <form id="taskForm" class="task-form">
+                  <label>
+                    Назва завдання
+                    <input id="title" type="text" placeholder="Підготувати презентацію до захисту" required />
+                  </label>
+                  <label>
+                    Опис
+                    <textarea id="description" rows="4" placeholder="Коротко опишіть результат, матеріали або важливі примітки"></textarea>
+                  </label>
+                  <div class="form-grid">
+                    <label>
+                      Категорія
+                      <select id="category">
+                        <option value="Навчання">Навчання</option>
+                        <option value="Робота">Робота</option>
+                        <option value="Особисте">Особисте</option>
+                        <option value="Здоров'я">Здоров'я</option>
+                        <option value="Побут">Побут</option>
+                      </select>
+                    </label>
+                    <label>
+                      Пріоритет
+                      <select id="priority">
+                        <option value="high">Високий</option>
+                        <option value="medium" selected>Середній</option>
+                        <option value="low">Низький</option>
+                      </select>
+                    </label>
+                    <label>
+                      Статус
+                      <select id="status">
+                        <option value="planned">Заплановано</option>
+                        <option value="progress">У процесі</option>
+                        <option value="done">Виконано</option>
+                      </select>
+                    </label>
+                    <label>
+                      Тривалість
+                      <select id="duration">
+                        <option value="30">30 хв</option>
+                        <option value="45">45 хв</option>
+                        <option value="60" selected>60 хв</option>
+                        <option value="90">90 хв</option>
+                        <option value="120">120 хв</option>
+                      </select>
+                    </label>
+                    <label>
+                      Дата
+                      <input id="date" type="date" required />
+                    </label>
+                    <label>
+                      Час
+                      <input id="time" type="time" required />
+                    </label>
+                  </div>
+                  <button class="primary-button" type="submit">Зберегти завдання</button>
+                </form>
+              </section>
+
+              <section class="panel">
+                <div class="section-head planner-head">
+                  <div>
+                    <p class="section-label">Робоча дошка</p>
+                    <h2>Керування завданнями</h2>
+                  </div>
+                  <div class="toolbar">
+                    <input id="searchInput" type="search" placeholder="Пошук за назвою, описом або категорією" />
+                    <select id="filterStatus">
+                      <option value="all">Усі статуси</option>
+                      <option value="planned">Заплановано</option>
+                      <option value="progress">У процесі</option>
+                      <option value="done">Виконано</option>
+                    </select>
+                    <select id="filterPriority">
+                      <option value="all">Усі пріоритети</option>
+                      <option value="high">Високий</option>
+                      <option value="medium">Середній</option>
+                      <option value="low">Низький</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div id="boardColumns" class="board-columns"></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="view" data-view="habits">
+            <div class="planner-grid">
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <p class="section-label">Звички</p>
+                    <h2>Щоденні ритуали</h2>
+                  </div>
+                </div>
+                <div id="habitList" class="habit-list"></div>
+              </section>
+
+              <section class="panel">
+                <div class="section-head">
+                  <div>
+                    <p class="section-label">Нотатки</p>
+                    <h2>Особистий простір</h2>
+                  </div>
+                  <span id="notesStatus" class="status-chip neutral">Збережено</span>
+                </div>
+                <textarea
+                  id="notesInput"
+                  class="notes-input"
+                  rows="18"
+                  placeholder="Записуйте ідеї, підсумки дня, короткі спостереження та плани на завтра"
+                ></textarea>
+              </section>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
