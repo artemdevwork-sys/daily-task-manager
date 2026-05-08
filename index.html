@@ -84,32 +84,42 @@
 
     <div id="appScreen" class="app-shell app-hidden">
       <header class="topbar">
-        <div class="hero-card">
-          <p class="eyebrow">Дипломний проєкт</p>
-          <h1>TaskFlow UA</h1>
-          <p class="hero-copy">
-            Вебзастосунок для організації щоденних завдань користувача з
-            персональним кабінетом, керуванням активностями, аналітикою та
-            адаптивним інтерфейсом.
+        <div class="dashboard-header panel">
+          <div class="dashboard-header-main">
+            <div>
+              <p class="eyebrow">Дипломний проєкт</p>
+              <h1>TaskFlow UA</h1>
+            </div>
+            <div class="top-actions">
+              <button id="themeToggle" class="ghost-button" type="button">Змінити тему</button>
+              <button id="logoutButton" class="ghost-button danger" type="button">Вийти</button>
+            </div>
+          </div>
+
+          <p class="hero-copy compact-copy">
+            Персональний вебзастосунок для організації щоденних завдань,
+            контролю виконання, керування пріоритетами, звичками та особистими
+            нотатками користувача.
           </p>
-        </div>
 
-        <div class="control-card">
-          <div class="top-actions">
-            <button id="themeToggle" class="ghost-button" type="button">Змінити тему</button>
-            <button id="logoutButton" class="ghost-button danger" type="button">Вийти</button>
-          </div>
+          <div class="dashboard-header-grid">
+            <div class="profile-card">
+              <span>Користувач</span>
+              <strong id="profileName"></strong>
+              <p id="profileEmail"></p>
+            </div>
 
-          <div class="profile-card">
-            <span>Користувач</span>
-            <strong id="profileName"></strong>
-            <p id="profileEmail"></p>
-          </div>
+            <div class="focus-card">
+              <span>Фокус дня</span>
+              <strong id="focusTask"></strong>
+              <p id="focusMeta"></p>
+            </div>
 
-          <div class="focus-card">
-            <span>Фокус дня</span>
-            <strong id="focusTask"></strong>
-            <p id="focusMeta"></p>
+            <div class="quick-note-card">
+              <span>Статус системи</span>
+              <strong>Робочий режим</strong>
+              <p>Усі персональні дані, теми та задачі зберігаються локально в браузері.</p>
+            </div>
           </div>
         </div>
       </header>
@@ -148,23 +158,7 @@
         <section class="content">
           <section class="view view-active" data-view="overview">
             <div class="overview-top">
-              <article class="panel statement-card">
-                <p class="section-label">Продуктивність</p>
-                <h2>Центр керування щоденною активністю</h2>
-                <p>
-                  TaskFlow UA поєднує керування задачами, таймлайн подій,
-                  статуси виконання, особисті звички та короткі нотатки в
-                  межах єдиного вебсередовища.
-                </p>
-                <div class="tag-row">
-                  <span>Авторизація</span>
-                  <span>Kanban</span>
-                  <span>Theme Switcher</span>
-                  <span>Local Storage</span>
-                </div>
-              </article>
-
-              <article class="panel progress-card">
+              <article class="panel progress-card wide-progress">
                 <div class="section-head">
                   <div>
                     <p class="section-label">Загальний прогрес</p>
@@ -176,6 +170,12 @@
                   <div id="progressBar" class="progress-bar"></div>
                 </div>
                 <p id="progressText" class="soft-text"></p>
+                <div class="tag-row">
+                  <span>Авторизація</span>
+                  <span>Kanban</span>
+                  <span>Theme Switcher</span>
+                  <span>Local Storage</span>
+                </div>
               </article>
             </div>
 
